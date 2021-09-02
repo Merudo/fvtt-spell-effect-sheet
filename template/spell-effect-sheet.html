@@ -1,14 +1,15 @@
 <form class="{{cssClass}}" autocomplete="off">
-   <div id="stat-block-wrapper">
-        <div id="stat-block" class="stat-block wide">
-            <hr class="orange-border" />
+    <div id="stat-block" class="stat-block wide">
+        <hr class="orange-border" />
             <div class="section-left">
-                
                 <div class="creature-heading">
                     <div class="creature-heading-left"><img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img"/></div>
                     <div class="creature-heading-right">
                         <h1 id="monster-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{ localize 'DND5E.Name' }}"/></h1>
-                        <h2 id="monster-type">{{lookup config.actorSizes data.traits.size}}, {{data.details.type}}, {{data.details.source}}</h2>
+                        <div class="monster-type">
+				{{lookup config.actorSizes data.traits.size}},
+				<span class="optional-space">{{~labels.type~}}<a class="config-button config-button-hidden" data-action="type" title="{{ localize 'DND5E.CreatureTypeConfig' }}"><i class="fas fa-cog"></i></a></span><span class="optional-comma" contenteditable="{{flags.editing}}" data-field-key="data.details.alignment" placeholder="{{ localize 'DND5E.Alignment' }}">{{~data.details.alignment~}}</span><span class="optional-comma" contenteditable="{{flags.editing}}" data-field-key="data.details.source"    placeholder="{{ localize 'DND5E.Source'    }}">{{~data.details.source~}}</span>
+			</div>
                         <svg height="5" width="100%" class="tapered-rule">
                             <polyline points="0,0 400,2.5 0,5"></polyline>
                         </svg>
@@ -16,9 +17,9 @@
                             <h4 class="form-group"><a class="config-button" data-action="movement" title="{{localize 'DND5E.MovementConfig'}}">{{ localize "DND5E.Speed" }}</a></h4>
                             <p id="speed">{{movement.primary}} {{movement.special}}</p>
                         </div> <!-- property line -->
-						<div class="property-line">
-							<h4 class="form-group">{{localize 'DND5E.SpellDC'}}</h4>	
-							<p id="dc"> {{data.attributes.spelldc}}</p>				
+				<div class="property-line">
+				<h4 class="form-group">{{localize 'DND5E.SpellDC'}}</h4>	
+				<p id="dc"> {{data.attributes.spelldc}}</p>				
                         </div> <!-- property line -->
                     </div>
                 </div> <!-- creature heading -->
@@ -75,11 +76,11 @@
                                 </ol>
                             {{/each}}
                         </ol>
+						
                         <ol class="inventory-list">
+						    <h3>{{localize "DND5E.ActionPl"}}</h3>
                             {{#each features as |section sid|}}
                                 {{#ifeq section.label "Actions"}}
-                                    <h3>{{localize section.label}}</h3>
-                            
                                     <ol class="items-list">
                                         {{#each section.items as |item iid|}}
                                             <li class="item flexrow {{#if isDepleted}}depleted{{/if}}" data-item-id="{{item._id}}">
@@ -99,9 +100,7 @@
                                         </ol>
                                 
                                 {{/ifeq}}
-                                {{#ifeq section.label "Attacks"}}
-                                    <h3>{{localize section.label}}</h3>
-                            
+                                {{#ifeq section.label "Attacks"}}                           
                                     <ol class="items-list">
                                         {{#each section.items as |item iid|}}
                                             <li class="item flexrow {{#if isDepleted}}depleted{{/if}}" data-item-id="{{item._id}}">
@@ -175,9 +174,7 @@
                         </ol>
                     </div>
                 </div> <!-- actions -->
-            </div> <!-- section right -->
-            <hr class="orange-border bottom" />
-        </div>
+        </div> <!-- section right -->
+        <hr class="orange-border bottom" />
     </div>
-    
 </form>
